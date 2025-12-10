@@ -15,6 +15,8 @@ Route::post('/logout', [App\Http\Controllers\AuthController::class, 'logout'])->
 
 // Debe tener el nombre 'dashboard'
 Route::middleware(['auth'])->group(function () {
-    Route::get('/dashboard', [HomeController::class, 'dashboard'])->name('dashboard'); 
-    // ...
+    Route::get('/dashboard', [HomeController::class, 'dashboard'])->name('dashboard');
+    Route::resource('censo', App\Http\Controllers\CensoController::class)->parameters([
+        'censo' => 'hermano', // Le decimos a Laravel: para la URL /censo/{param}, usa 'hermano'
+    ]);
 });
