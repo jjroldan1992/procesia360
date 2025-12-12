@@ -17,6 +17,18 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Client Data
+    |--------------------------------------------------------------------------
+    |
+    | Specific data from the client
+    |
+    */
+
+    'cliente_nombre' => env('CLIENTE_NOMBRE', ''),
+    'cliente_nombre_corto' => env('CLIENTE_NOMBRE_CORTO', ''),
+    'cliente_tipo' => env('CLIENTE_TIPO', ''),
+    /*
+    |--------------------------------------------------------------------------
     | Application Environment
     |--------------------------------------------------------------------------
     |
@@ -78,11 +90,11 @@ return [
     |
     */
 
-    'locale' => env('APP_LOCALE', 'en'),
+    'locale' => env('APP_LOCALE', ''),
 
-    'fallback_locale' => env('APP_FALLBACK_LOCALE', 'en'),
+    'fallback_locale' => env('APP_FALLBACK_LOCALE', ''),
 
-    'faker_locale' => env('APP_FAKER_LOCALE', 'en_US'),
+    'faker_locale' => env('APP_FAKER_LOCALE', ''),
 
     /*
     |--------------------------------------------------------------------------

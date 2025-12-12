@@ -23,9 +23,12 @@ class Usuario extends Authenticatable
     // Permite asignar estos campos al crear un nuevo registro.
     protected $fillable = [
         'rol_id',
+        'nombre',
+        'apellidos',
         'email',
         'password',
         'remember_token',
+        'avatar_path',
     ];
 
     // 3. Atributos "Hidden" (Ocultos en salidas de Array/JSON)
@@ -74,5 +77,29 @@ class Usuario extends Authenticatable
     {
         // Si el ID del rol es 1 (Admin) a 5 (Miembro de Junta)
         return $this->rol_id >= 1 && $this->rol_id <= 5;
+    }
+
+    /**
+     * Accesor para obtener las iniciales del nombre y apellido.
+     */
+    public function getInitialsAttribute(): string
+    {
+        $nombre = $this->nombre ?? '';
+        $apellido = $this->apellidos ?? '';
+        
+        // Retorna las iniciales en mayúsculas (ej: "JR")
+        return strtoupper(substr($nombre, 0, 1) . substr($apellido, 0, 1));
+    }
+
+    /**
+     * Accesor para obtener la URL del avatar. (SE SIMPLIFICA)
+     * Ahora solo devuelve la URL si existe el path.
+     */
+    public function getAvatarUrlAttribute(): ?string
+    {
+        if ($this->avatar_path) {
+            return asset('storage/' . $this->avatar_path);
+        }
+        return null;
     }
 }

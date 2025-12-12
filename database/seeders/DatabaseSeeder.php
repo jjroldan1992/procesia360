@@ -2,21 +2,23 @@
 
 namespace Database\Seeders;
 
-use App\Models\Hermano;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Schema; // <-- AÑADIR ESTE IMPORT
 
 class DatabaseSeeder extends Seeder
 {
-    /**
-     * Seed the application's database.
-     */
     public function run(): void
     {
+        // 1. DESHABILITAR LAS RESTRICCIONES DE CLAVE FORÁNEA
+        Schema::disableForeignKeyConstraints();
+
         $this->call([
-            \Database\Seeders\RoleSeeder::class, // Asumimos que tienes el RoleSeeder
-            \Database\Seeders\AdminSeeder::class, // <-- ¡CLAVE! Asegura que el usuario admin se cree
+            AdminSeeder::class,
+            RoleSeeder::class,
+            HermanoSeeder::class, // <-- Tu seeder principal
         ]);
         
-        Hermano::factory()->count(200)->create();
+        // 2. HABILITAR LAS RESTRICCIONES DE CLAVE FORÁNEA
+        Schema::enableForeignKeyConstraints();
     }
 }
