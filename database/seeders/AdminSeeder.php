@@ -24,6 +24,8 @@ class AdminSeeder extends Seeder
         // Insertamos el usuario administrador principal
         DB::table('usuarios')->insert([
             'rol_id' => 1, // ID 1: Administrador
+            'nombre' => 'Juan Jesús',
+            'apellidos' => 'Roldán Bermúdez',
             'email' => 'admin@procesia360.es', 
             'password' => Hash::make('password'), 
             'created_at' => now(),

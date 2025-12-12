@@ -45,7 +45,7 @@ return new class extends Migration
 
             $table->string('nombre', 100);
             $table->string('apellido', 100);
-            $table->string('dni', 20)->unique(); // DNI debe ser único
+            $table->string('dni', 20)->nullable()->unique(); // DNI debe ser único
             $table->date('fecha_alta'); // Columna para la fecha en que se hizo hermano
             
             $table->timestamps();

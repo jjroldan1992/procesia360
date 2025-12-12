@@ -1,53 +1,518 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@yield('title') | ProcesIA 360 Admin</title>
-    <style>
-        /* Estilos básicos para el layout */
-        body { font-family: 'Arial', sans-serif; display: flex; margin: 0; background-color: #f4f4f4; }
-        .sidebar { width: 250px; background-color: #800000; color: white; padding: 20px; height: 100vh; position: fixed; }
-        .sidebar h2 { color: #ffcc00; margin-top: 0; }
-        .sidebar a { color: white; text-decoration: none; display: block; padding: 10px 0; border-bottom: 1px solid #a03333; }
-        .sidebar a:hover { background-color: #a03333; }
-        .content { margin-left: 250px; padding: 20px; width: calc(100% - 250px); }
-        .header-top { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 2px solid #ddd; margin-bottom: 20px; }
-        .btn-primary { background-color: #007bff; color: white; padding: 8px 15px; text-decoration: none; border-radius: 4px; }
-    </style>
-</head>
-<body>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>@yield('title') | ProcesIA 360 Admin</title>
 
-    <div class="sidebar">
-        <h2>ProcesIA 360</h2>
-        <p style="color: #ccc;">Administración</p>
-        <hr style="border-color: #a03333;">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
 
-        <a href="{{ route('dashboard') }}">Dashboard</a>
-        <a href="{{ route('censo.index') }}">Censo de Hermanos</a>
-        <a href="#">Módulo de Cuotas</a>
-        <a href="#">Módulo de Inventario</a>
+        <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+    </head>
+    <body>
+        
+        <aside class="sidebar" id="menu-mobile">
+            
+            <nav class="space-y-2">
 
-        <div style="margin-top: 50px;">
-            <form method="POST" action="{{ route('logout') }}">
-                @csrf
-                <button type="submit" style="background: none; border: none; color: #ffcc00; cursor: pointer; padding: 0;">
-                    Cerrar Sesión
-                </button>
-            </form>
+                <div class="menu-header">
+
+                    {{-- ESCUDO DE LA HERMANDAD --}}
+                    <div class="escudo-header-container">
+                        <img src="{{ asset('img/escudo.png') }}" class="escudo-header">
+                    </div>
+                    
+                    <div class="header-title">{{ config('app.cliente_nombre_corto') }}</div>
+                    <div class="header-subtitle">{{ config('app.cliente_nombre') }}</div>
+
+                </div>
+
+                <a href="{{ route('dashboard') }}" class="sidebar-link sidebar-link-inactive">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-house" aria-hidden="true"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"></path><path d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg>
+                    Dashboard
+                </a>
+
+                <h3>Secretaría</h3>
+                
+                <a href="{{ route('censo.index') }}" class="sidebar-link sidebar-link-inactive">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-users" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><path d="M16 3.128a4 4 0 0 1 0 7.744"></path><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><circle cx="9" cy="7" r="4"></circle></svg>
+                    Censo de Hermanos
+                </a>
+                
+                {{-- NUEVO: Menú Colapsable de Tesorería --}}
+                <div class="sidebar-dropdown-group {{ request()->is('tesoreria/*') || request()->routeIs('tesoreria.*') ? 'open' : '' }}">
+                    
+                    {{-- BOTÓN PRINCIPAL (Toggle) --}}
+                    <button type="button" class="sidebar-link sidebar-dropdown-toggle">
+                        <div>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-banknote"><rect width="20" height="12" x="2" y="6" rx="3"></rect><circle cx="12" cy="12" r="2"></circle><path d="M6 12h.01"></path><path d="M18 12h.01"></path></svg>
+                            <span>Tesorería</span>
+                        </div>
+                        <div>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down dropdown-arrow"><path d="m6 9 6 6 6-6"></path></svg>
+                        </div>
+                    </button>
+                    
+                    {{-- CONTENEDOR DE SUB-ENLACES (Colapsable) --}}
+                    <div class="sidebar-dropdown-content" style="max-height: {{ request()->is('tesoreria/*') || request()->routeIs('tesoreria.*') ? '500px' : '0' }};">
+                        
+                        {{-- Sub-Módulo 1: Gestión de Cuotas (CRUD de Cuota) --}}
+                        <a href="#" class="sidebar-link sub-link {{ request()->routeIs('cuotas.*') ? 'sidebar-link-active' : 'sidebar-link-inactive' }}">
+                            <span>Gestión de Cuotas</span>
+                        </a>
+                        
+                        {{-- Sub-Módulo 2: Emisión y Control de Recibos --}}
+                        <a href="#" class="sidebar-link sub-link {{ request()->routeIs('recibos.*') ? 'sidebar-link-active' : 'sidebar-link-inactive' }}">
+                            <span>Recibos y Pagos</span>
+                        </a>
+                        
+                        {{-- Sub-Módulo 3: Contabilidad/Informes (Futuro) --}}
+                        <a href="#" class="sidebar-link sub-link sidebar-link-inactive">
+                            <span>Contabilidad / Informes</span>
+                        </a>
+                        
+                        {{-- Sub-Módulo 4: Configuración (ej: Parámetros de cobro) --}}
+                        <a href="#" class="sidebar-link sub-link sidebar-link-inactive">
+                            <span>Configuración Tesorería</span>
+                        </a>
+                        
+                    </div>
+                </div>
+
+                <a href="#" class="sidebar-link sidebar-link-inactive">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-file-text" aria-hidden="true"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"></path><path d="M14 2v4a2 2 0 0 0 2 2h4"></path><path d="M10 9H8"></path><path d="M16 13H8"></path><path d="M16 17H8"></path></svg>
+                    Documentos
+                </a>
+                
+                <a href="#" class="sidebar-link sidebar-link-inactive">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-box" aria-hidden="true"><path d="M21 8a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2z"></path><path d="M12 2v4"></path><path d="M12 18v4"></path><path d="M18 10h-2"></path><path d="M8 10H6"></path></svg>
+                    Inventario
+                </a>
+
+                <a href="#" class="sidebar-link sidebar-link-inactive">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-calendar" aria-hidden="true"><path d="M8 2v4"></path><path d="M16 2v4"></path><rect width="18" height="18" x="3" y="4" rx="2"></rect><path d="M3 10h18"></path></svg>
+                    Calendario
+                </a>
+
+            </nav>
+
+        </aside>
+
+        <div class="content">
+
+            <header class="main-header">
+                <div class="header-content">
+                    <div class="branding">
+    
+                        {{-- BOTÓN HAMBURGUESA (Visible solo en móvil) --}}
+                        <button id="mobile-menu-toggle" class="mobile-toggle-btn" aria-label="Menú principal">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-menu"><line x1="4" x2="20" y1="12" y2="12"></line><line x1="4" x2="20" y1="6" y2="6"></line><line x1="4" x2="20" y1="18" y2="18"></line></svg>
+                        </button>
+                        
+                        <div>
+                            <h1 class="app-title">@yield('title')</h1>
+                            <p class="app-subtitle">Gestión Integral de Hermandades y Cofradías</p>
+                        </div>
+                    </div>
+    
+                    <div class="user-actions">
+                        <button id="theme-toggle" class="notifications-button" title="Alternar tema oscuro/claro">
+                            {{-- Icono SVG de un sol/luna --}}
+                            <svg id="theme-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-sun h-5 w-5 text-gray-600" aria-hidden="true">
+                                <circle cx="12" cy="12" r="4"></circle><path d="M12 2v2"></path><path d="M12 20v2"></path><path d="m4.93 4.93 1.41 1.41"></path><path d="m17.66 17.66 1.41 1.41"></path><path d="M2 12h2"></path><path d="M20 12h2"></path><path d="m6.34 17.66-1.41 1.41"></path><path d="m19.07 4.93-1.41 1.41"></path>
+                            </svg>
+                        </button>
+                        
+                        {{-- Botón de Notificaciones (replicado del SVG bell) --}}
+                        <button class="notifications-button">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-bell" aria-hidden="true"><path d="M10.268 21a2 2 0 0 0 3.464 0"></path><path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"></path></svg>
+                            <span class="notification-badge"></span>
+                        </button>
+                        
+                        {{-- Perfil del Usuario Autenticado --}}
+                        <div id="user-menu-trigger" class="user-profile">
+                            @php
+                                $avatarUrl = Auth::user()->avatar_url; // Usa el Accesor simple
+                            @endphp
+                            
+                            @if ($avatarUrl)
+                                {{-- 1. Si hay avatar, mostramos la imagen --}}
+                                <img 
+                                    id="current-avatar-preview"
+                                    src="{{ $avatarUrl }}"
+                                    alt="Avatar de Usuario"
+                                    class="avatar-display avatar-small"
+                                >
+                            @else
+                                {{-- 2. Si no hay avatar, mostramos el fallback de iniciales --}}
+                                <span 
+                                    id="current-avatar-preview"
+                                    class="avatar-display avatar-initials-fallback"
+                                >
+                                    {{ Auth::user()->initials }}
+                                </span>
+                            @endif
+                            <div class="text-left">
+                                <p class="user-name">{{ Auth::user()->nombre }} {{ Auth::user()->apellidos }}</p>
+                                {{-- Usamos la relación para obtener el nombre del rol --}}
+                                <p class="user-role">{{ Auth::user()->rol->nombre ?? 'N/A' }}</p>
+                            </div>
+                        </div>
+    
+                        {{-- 2. EL MENÚ DESPLEGABLE (Oculto por defecto) --}}
+                        <div id="user-menu-dropdown" class="user-dropdown-menu">
+                            
+                            {{-- Opción 1: Editar Perfil (Sin funcionalidad por ahora) --}}
+                            <a href="#" class="dropdown-item">
+                                <i class="lucide lucide-user-edit mr-2"></i> Editar mi Perfil
+                            </a>
+                            
+                            {{-- Separador Visual --}}
+                            <div class="dropdown-divider"></div>
+    
+                            {{-- Opción 2: Cerrar Sesión (FUNCIONALIDAD REQUERIDA) --}}
+                            <form method="POST" action="{{ route('logout') }}">
+                                @csrf
+                                <button type="submit" class="dropdown-item logout-btn">
+                                    <i class="lucide lucide-log-out mr-2"></i> Cerrar Sesión
+                                </button>
+                            </form>
+    
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <main>
+                @yield('content')
+                <div class="content-footer content-card">
+                    <p><b>{{ config('app.cliente_nombre') }}</b></p>
+                    <p><img src="{{ asset('img/logo-procesia360-dark.png') }}" alt="Logo ProcesIA 360" class="main-logo-footer js-theme-logo"><br>&copy; 2025 - {{ date('Y') }} | <b>ProcesIA 360</b> - Desarrollado por <b>J. Jesús Roldán</b></p>
+                </div>
+            </main>
         </div>
-    </div>
 
-    <div class="content">
-        <div class="header-top">
-            <h1>@yield('title')</h1> 
-            <p>Bienvenido, {{ Auth::user()->email }}</p>
+
+        <div id="offcanvas-profile-edit" class="offcanvas-overlay">
+            <div class="offcanvas-panel content-card">
+                
+                <div class="offcanvas-header">
+                    <h3 class="offcanvas-title">
+                        Editar mi Perfil
+                        <button type="button" class="close-offcanvas-btn" data-target="offcanvas-profile-edit">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x">
+                                <path d="M18 6 6 18"></path>
+                                <path d="m6 6 12 12"></path>
+                            </svg>
+                        </button>
+                    </h3>
+                </div>
+
+                <div class="offcanvas-body">
+                    
+                    <form id="profile-edit-form" method="POST" action="{{ route('profile.update') }}" enctype="multipart/form-data">
+                        @csrf
+                        @method('PUT') 
+
+                        {{-- Campo Foto de Perfil (Subida y Previsualización) --}}
+                        <div class="form-group text-center mb-4">
+                            
+                            {{-- Contenedor de la Foto de Perfil (Subida y Previsualización) --}}
+                            <div class="form-group text-center mb-4">
+                                
+                                <div class="avatar-display-container">
+                                    @php
+                                        $avatarUrl = Auth::user()->avatar_url; // Usa el Accesor simple
+                                    @endphp
+                                    
+                                    @if ($avatarUrl)
+                                        {{-- 1. Si hay avatar, mostramos la imagen --}}
+                                        <img 
+                                            id="current-avatar-preview"
+                                            src="{{ $avatarUrl }}"
+                                            alt="Avatar de Usuario"
+                                            class="avatar-display avatar-large"
+                                        >
+                                    @endif
+                                    
+                                    <input type="file" name="avatar" id="avatar-input" accept="image/*" style="display: none;">
+                                    
+                                    <button type="button" class="btn btn-secondary btn-sm mt-3" 
+                                            onclick="document.getElementById('avatar-input').click()">
+                                        Subir Foto
+                                    </button>
+                                </div>
+                                @error('avatar')<small class="text-danger mt-1">{{ $message }}</small>@enderror
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="profile_name">Nombre</label>
+                            <input type="text" id="profile_name" name="nombre" class="form-input" value="{{ old('nombre', Auth::user()->nombre) }}" required>
+                            @error('nombre') <small class="text-danger mt-1">{{ $message }}</small> @enderror 
+                        </div>
+
+                        <div class="form-group">
+                            <label for="profile_apellidos">Apellidos</label>
+                            <input type="text" id="profile_apellidos" name="apellidos" class="form-input" value="{{ old('apellidos', Auth::user()->apellidos) }}" required>
+                            @error('apellidos') <small class="text-danger mt-1">{{ $message }}</small> @enderror 
+                        </div>
+
+                        <div class="form-group">
+                            <label for="profile_email">Email</label>
+                            <input type="email" id="profile_email" name="email" class="form-input" value="{{ Auth::user()->email }}" disabled>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="profile_password">Nueva Contraseña (Opcional)</label>
+                            <input type="password" id="profile_password" name="password" class="form-input" placeholder="Dejar vacío para no cambiar">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="profile_password_confirmation">Confirmar Contraseña</label>
+                            <input type="password" id="profile_password_confirmation" name="password_confirmation" class="form-input" placeholder="Repite la nueva contraseña">
+                        </div>
+                           
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-primary" style="width:100%">
+                                Guardar Cambios
+                            </button>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
         </div>
 
-        <main>
-            @yield('content')
-        </main>
-    </div>
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                const toggleButton = document.getElementById('theme-toggle');
+                const htmlElement = document.documentElement; // La etiqueta <html>
+                const appLogos = document.querySelectorAll('.js-theme-logo');
 
-</body>
+                // ICONOS DE PRUEBA (puedes reemplazarlos por SVGs más bonitos)
+                const sunIcon = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-sun h-5 w-5 text-gray-600" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2"></path><path d="M12 20v2"></path><path d="m4.93 4.93 1.41 1.41"></path><path d="m17.66 17.66 1.41 1.41"></path><path d="M2 12h2"></path><path d="M20 12h2"></path><path d="m6.34 17.66-1.41 1.41"></path><path d="m19.07 4.93-1.41 1.41"></path></svg>`;
+                const moonIcon = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-moon h-5 w-5 text-gray-600" aria-hidden="true"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path></svg>`;
+
+                /**
+                 * Aplica la clase .dark y actualiza el icono.
+                 */
+                function setTheme(isDark) {
+                    if (isDark) {
+                        htmlElement.classList.add('dark');
+                        localStorage.setItem('theme', 'dark');
+                        toggleButton.innerHTML = moonIcon; // Mostrar la luna (estamos en oscuro)
+                    } else {
+                        htmlElement.classList.remove('dark');
+                        localStorage.setItem('theme', 'light');
+                        toggleButton.innerHTML = sunIcon; // Mostrar el sol (estamos en claro)
+                    }
+                    const themeSuffix = isDark ? '-light.png' : '-dark.png';
+                    const baseName = 'logo-procesia360'; // Nombre base del archivo
+                    
+                    // Iteramos sobre todos los elementos con la clase js-theme-logo
+                    appLogos.forEach(logo => {
+                        const assetPath = `/img/${baseName}${themeSuffix}`; 
+                        logo.src = assetPath;
+                    });
+                }
+
+                // 1. Cargar la preferencia al inicio (si existe)
+                const savedTheme = localStorage.getItem('theme');
+                const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches; // Preferencia del sistema operativo
+
+                if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+                    setTheme(true);
+                } else {
+                    setTheme(false);
+                }
+
+                // 2. Manejar el click del botón
+                toggleButton.addEventListener('click', () => {
+                    const isDark = htmlElement.classList.contains('dark');
+                    setTheme(!isDark);
+                });
+
+                // --- Lógica de Enlace Activo ---
+                const sidebarLinks = document.querySelectorAll('.sidebar-link');
+                const currentPath = window.location.href; 
+                
+                // Función para limpiar todos los estados activos
+                function clearActiveClass() {
+                    sidebarLinks.forEach(link => {
+                        // Quitamos la clase de activo
+                        link.classList.remove('sidebar-link-active');
+                        // Restauramos la clase de inactivo (necesaria para el hover/color por defecto)
+                        link.classList.add('sidebar-link-inactive'); 
+                    });
+                }
+
+                // Aplicar el estado activo basado en la URL
+                clearActiveClass();
+                
+                sidebarLinks.forEach(link => {
+                    // Comparamos la URL de la página con el href del enlace
+                    if (currentPath.includes(link.href) && link.href.length > 0) {
+                        // Si encontramos una coincidencia (la ruta actual contiene la ruta del enlace)
+                        link.classList.remove('sidebar-link-inactive');
+                        link.classList.add('sidebar-link-active');
+                    }
+                });
+
+                // Opcional: Si quieres que al hacer clic se guarde el estado inmediatamente (aunque la recarga lo hace)
+                sidebarLinks.forEach(link => {
+                    link.addEventListener('click', () => {
+                        // Limpiar y aplicar la clase activa al enlace clicado
+                        clearActiveClass();
+                        link.classList.remove('sidebar-link-inactive');
+                        link.classList.add('sidebar-link-active');
+                    });
+                });
+
+                // --- Lógica del Menú Desplegable de Usuario ---
+                const trigger = document.getElementById('user-menu-trigger');
+                const menu = document.getElementById('user-menu-dropdown');
+                
+                // El nuevo enlace para abrir el Offcanvas
+                const editProfileLink = menu.querySelector('.dropdown-item'); 
+                
+                // El Offcanvas
+                const offcanvasProfile = document.getElementById('offcanvas-profile-edit');
+                const closeOffcanvasBtn = offcanvasProfile.querySelector('.close-offcanvas-btn');
+                
+
+                // Lógica de Toggle del Menú Desplegable (existente)
+                if (trigger && menu) {
+                    trigger.addEventListener('click', () => {
+                        menu.classList.toggle('active');
+                    });
+
+                    // Cerrar el menú si se hace clic fuera
+                    document.addEventListener('click', (e) => {
+                        if (!trigger.contains(e.target) && !menu.contains(e.target)) {
+                            menu.classList.remove('active');
+                        }
+                    });
+                }
+                
+                // -----------------------------------------------------------------
+                // NUEVA LÓGICA: Abrir Offcanvas desde el Menú Desplegable
+                // -----------------------------------------------------------------
+                if (editProfileLink && offcanvasProfile) {
+                    editProfileLink.addEventListener('click', (e) => {
+                        e.preventDefault(); // Evita que el enlace # se recargue
+                        
+                        menu.classList.remove('active'); // 1. Cierra el menú desplegable
+                        offcanvasProfile.classList.add('active'); // 2. Abre el Offcanvas
+                        document.body.style.overflow = 'hidden'; // Bloquea el scroll del body
+                    });
+                }
+                
+                // Lógica para Cerrar el Offcanvas
+                if (closeOffcanvasBtn && offcanvasProfile) {
+                    closeOffcanvasBtn.addEventListener('click', () => {
+                        offcanvasProfile.classList.remove('active');
+                        document.body.style.overflow = ''; // Restaura el scroll
+                    });
+                    
+                    // Cerrar al hacer click en el overlay
+                    offcanvasProfile.addEventListener('click', function(e) {
+                        if (e.target === offcanvasProfile) {
+                            offcanvasProfile.classList.remove('active');
+                            document.body.style.overflow = '';
+                        }
+                    });
+                }
+
+                const menu_mobile = document.getElementById('menu-mobile');
+
+                // Lógica propia menú mobile
+                document.getElementById('mobile-menu-toggle').addEventListener('click', () => {
+                    menu_mobile.classList.toggle('menu-mobile-visible');
+                });
+
+                document.addEventListener('click', function (event) {
+                    // event.clientX indica la posición del clic en el eje X
+                    if (event.clientX > 325 && menu_mobile.classList.contains('menu-mobile-visible')) {
+                        menu_mobile.classList.toggle('menu-mobile-visible');
+                    };
+                });
+
+                const avatarInput = document.getElementById('avatar-input');
+                const avatarPreview = document.getElementById('current-avatar-preview');
+
+                if (avatarInput && avatarPreview) {
+                    avatarInput.addEventListener('change', function(e) {
+                        const file = e.target.files[0];
+                        if (file) {
+                            const reader = new FileReader();
+                            reader.onload = function(e) {
+                                avatarPreview.src = e.target.result; // Muestra la imagen seleccionada
+                            }
+                            reader.readAsDataURL(file);
+                        }
+                    });
+                }
+            
+            });
+
+            document.addEventListener('click', (event) => {
+                // 1. Intentamos encontrar la fila clicable más cercana al elemento clickeado.
+                const row = event.target.closest('.js-clickable-row');
+                
+                // Si no se hizo clic en una fila clicable, o si la fila no tiene URL, salimos.
+                if (!row || !row.hasAttribute('data-href')) {
+                    return;
+                }
+
+                // 2. Verificar si el clic se originó dentro de la celda de acciones (para ignorarlo)
+                const actionCell = event.target.closest('.action-cell-no-click');
+                
+                // 3. Verificar si el clic fue en un botón o enlace interactivo dentro de la fila
+                const interactiveElement = event.target.closest('a, button');
+
+                // Si el clic NO fue en la celda de acciones y NO fue en un botón/enlace interactivo:
+                if (!actionCell && !interactiveElement) {
+                    const url = row.getAttribute('data-href');
+                    window.location.href = url;
+                }
+            });
+
+            // --- Lógica del Dropdown de la Sidebar (MODIFICADA) ---
+            document.querySelectorAll('.sidebar-dropdown-group').forEach(group => {
+                const toggleButton = group.querySelector('.sidebar-dropdown-toggle');
+                const content = group.querySelector('.sidebar-dropdown-content');
+
+                if (toggleButton && content) {
+                    // Asegurar que el estado inicial de max-height sea correcto
+                    if (group.classList.contains('open')) {
+                        content.style.maxHeight = content.scrollHeight + 'px';
+                        // Si carga abierto por coincidencia de ruta, se mantiene activo
+                        toggleButton.classList.add('sidebar-link-active'); 
+                    }
+
+                    toggleButton.addEventListener('click', () => {
+                        const isClosing = group.classList.contains('open');
+                        
+                        // 1. Toggle la clase 'open' en el grupo
+                        group.classList.toggle('open');
+                        
+                        // 2. Controlar la clase de estilo ACTIVO en el botón (NUEVA LÓGICA)
+                        if (isClosing) {
+                            // Si estaba abierto y se va a cerrar: Quitar estilo activo
+                            content.style.maxHeight = '0';
+                            toggleButton.classList.remove('sidebar-link-active');
+                        } else {
+                            // Si estaba cerrado y se va a abrir: Poner estilo activo (VERDE)
+                            content.style.maxHeight = content.scrollHeight + 'px';
+                            toggleButton.classList.add('sidebar-link-active');
+                        }
+                    });
+                }
+            });
+        </script>
+        
+    </body>
 </html>

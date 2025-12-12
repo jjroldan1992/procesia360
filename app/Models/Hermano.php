@@ -20,13 +20,23 @@ class Hermano extends Model
         'nombre',
         'apellido',
         'dni',
-        'fecha_alta', // Campo de fecha que necesitarás para la antigüedad
+        'fecha_alta',
+        'numero_hermano',
+        'fecha_baja',
+        'fallecido',
+        'domicilio_calle',
+        'domicilio_numero',
+        'domicilio_cp',
+        'domicilio_poblacion',
+        'domicilio_provincia'
     ];
 
     // 3. Casts (Casteo de datos)
     // Especificamos que 'fecha_alta' debe ser manejado como un objeto de fecha/tiempo.
     protected $casts = [
-        'fecha_alta' => 'date', 
+        'fecha_alta' => 'date',
+        'fecha_baja' => 'date',
+        'fallecido' => 'boolean'
     ];
 
     // 4. Relación: Opcional con Usuario
@@ -38,5 +48,12 @@ class Hermano extends Model
         // Es una relación uno a uno: un Hermano puede tener un Usuario.
         // La clave foránea es 'usuario_id' en la tabla 'hermanos'.
         return $this->belongsTo(Usuario::class, 'usuario_id');
+    }
+
+    // Relación para acceder al historial de números del hermano
+    public function numerosHistorico()
+    {
+        return $this->hasMany(HermanoNumeroHistorico::class, 'hermano_id')
+                    ->orderBy('fecha_asignacion', 'desc');
     }
 }

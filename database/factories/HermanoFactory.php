@@ -4,37 +4,52 @@ namespace Database\Factories;
 
 use App\Models\Hermano;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Carbon; // Clase para manejar fechas fácilmente
 
+/**
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Hermano>
+ */
 class HermanoFactory extends Factory
 {
     /**
-     * The name of the factory's corresponding model.
+     * El nombre del modelo correspondiente.
      *
      * @var string
      */
     protected $model = Hermano::class;
 
     /**
-     * Define the model's default state.
+     * Define el estado predeterminado del modelo.
      *
-     * @return array
+     * @return array<string, mixed>
      */
-    public function definition()
+    public function definition(): array
     {
-        // Genera una fecha de alta aleatoria entre hace 15 años y 1 día.
-        $fecha_alta = $this->faker->dateTimeBetween('-15 years', 'yesterday');
-
+        // 1. Aseguramos que Faker use la localización española para las direcciones
+        $faker = \Faker\Factory::create('es_ES');
+        
+        // 2. Definimos una fecha de alta lógica (ej: entre hace 30 años y hoy)
+        $fechaAlta = $faker->dateTimeBetween('-86 years', 'now');
+        
         return [
-            // No asignamos usuario_id intencionalmente, ya que es opcional.
+            // Datos personales básicos
+            'nombre' => $faker->firstName(),
+            'apellido' => $faker->lastName(),
+            'dni' => $faker->unique()->dni(),
+            'fecha_alta' => $fechaAlta,
             
-            // Campos obligatorios:
-            'nombre' => $this->faker->firstName,
-            'apellido' => $this->faker->lastName,
-            'dni' => $this->faker->unique()->numerify('########A'), // Genera un DNI ficticio
-            'fecha_alta' => $fecha_alta,
+            // Estado de baja (por defecto ACTIVO)
+            'fecha_baja' => null, 
+            'fallecido' => false,
             
-            // Si tuvieras más campos, los añadirías aquí.
+            // 3. Campos de Domicilio usando Faker español
+            'domicilio_calle' => $faker->streetName(),
+            'domicilio_numero' => $faker->buildingNumber(),
+            'domicilio_cp' => $faker->postcode(),
+            'domicilio_poblacion' => $faker->city(),
+            'domicilio_provincia' => $faker->state(),
+            
+            // El numero_hermano se calculará al ejecutar el seeder
+            'numero_hermano' => null, 
         ];
     }
 }
