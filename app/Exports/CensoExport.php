@@ -25,6 +25,9 @@ class CensoExport implements FromCollection, WithHeadings
         $query = Hermano::query();
 
         switch ($this->filterType) {
+            case 'completo':
+                $query->whereNotNull('fecha_alta');
+                break;
             case 'activos':
                 // Hermanos que computan en el censo activo (sin fecha de baja)
                 $query->whereNull('fecha_baja');
@@ -71,7 +74,7 @@ class CensoExport implements FromCollection, WithHeadings
                 'Poblacion' => $hermano->domicilio_poblacion,
                 'CP' => $hermano->domicilio_cp,
                 'Fallecido' => $hermano->fallecido ? 'Sí' : 'No',
-                'Fecha Baja' => $hermano->fecha_baja ? $hermano->fecha_baja->format('d/m/Y') : 'N/A',
+                'Fecha Baja' => $hermano->fecha_baja ? $hermano->fecha_baja->format('d/m/Y') : '',
             ];
         });
     }

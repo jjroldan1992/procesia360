@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\CensoController;
+use App\Http\Controllers\CuentaContableController;
+use App\Http\Controllers\MovimientoController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -22,4 +24,8 @@ Route::middleware(['auth'])->group(function () {
         'censo' => 'hermano', // Le decimos a Laravel: para la URL /censo/{param}, usa 'hermano'
     ]);
     Route::put('/profile', [App\Http\Controllers\UserProfileController::class, 'update'])->name('profile.update');
+    Route::resource('cuentas', CuentaContableController::class);
+    Route::get('tesoreria/contabilidad', [MovimientoController::class, 'dashboard'])->name('tesoreria.dashboard');
+    Route::resource('movimientos', MovimientoController::class)->except(['index', 'show']);
+    Route::get('movimientos/listado', [MovimientoController::class, 'index'])->name('movimientos.index');
 });

@@ -161,8 +161,8 @@ class CensoController extends Controller
 
     public function export(Request $request)
     {
-        // Obtener el filtro seleccionado del modal. El valor por defecto es 'activos'.
-        $filterType = $request->input('filter_type', 'activos'); 
+        // Obtener el filtro seleccionado del modal. El valor por defecto es 'completo'.
+        $filterType = $request->input('filter_type', 'completo'); 
         
         // Generar un nombre de archivo único con el filtro y la fecha/hora actual
         $filename = 'censo_' . $filterType . '_' . Carbon::now()->format('Ymd_His') . '.xlsx';

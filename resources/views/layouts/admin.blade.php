@@ -10,6 +10,42 @@
         <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
 
         <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+
+        <script>
+            // Script de ejecución inmediata para evitar el "Flickering"
+            (function() {
+                const storedTheme = localStorage.getItem('theme');
+                
+                // Función para aplicar la clase dark
+                const applyDark = (shouldBeDark) => {
+                    if (shouldBeDark) {
+                        document.documentElement.classList.add('dark');
+                    }
+                };
+        
+                // 1. Si hay una preferencia guardada: usarla.
+                if (storedTheme === 'dark') {
+                    applyDark(true);
+                    return; // Detenemos la ejecución si ya hemos aplicado el tema.
+                }
+        
+                // 2. Si no hay preferencia guardada, pero el sistema operativo prefiere dark: usarla.
+                if (!storedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                    applyDark(true);
+                    return;
+                }
+                
+                // 3. Si se guarda "light" o por defecto, no se hace nada (se usa el CSS base).
+        
+            })();
+        </script>
+        
+        {{-- Nota: El resto de tu código que maneja el click del botón toggle
+             y la persistencia en localStorage debe permanecer en el script
+             principal dentro de document.addEventListener('DOMContentLoaded', ...).
+             Este script inline solo se encarga de la aplicación visual inmediata.
+        --}}
+
     </head>
     <body>
         
@@ -29,67 +65,55 @@
 
                 </div>
 
+                <h3 class="menu-title">La {{ config('app.cliente_tipo') }}</h3>
+
                 <a href="{{ route('dashboard') }}" class="sidebar-link sidebar-link-inactive">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-house" aria-hidden="true"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"></path><path d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg>
                     Dashboard
                 </a>
 
-                <h3>Secretaría</h3>
+                <h3 class="menu-title">Secretaría</h3>
                 
                 <a href="{{ route('censo.index') }}" class="sidebar-link sidebar-link-inactive">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-users" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><path d="M16 3.128a4 4 0 0 1 0 7.744"></path><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><circle cx="9" cy="7" r="4"></circle></svg>
                     Censo de Hermanos
                 </a>
+
+                <h3 class="menu-title">Tesorería</h3>
                 
-                {{-- NUEVO: Menú Colapsable de Tesorería --}}
-                <div class="sidebar-dropdown-group {{ request()->is('tesoreria/*') || request()->routeIs('tesoreria.*') ? 'open' : '' }}">
-                    
-                    {{-- BOTÓN PRINCIPAL (Toggle) --}}
-                    <button type="button" class="sidebar-link sidebar-dropdown-toggle">
-                        <div>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-banknote"><rect width="20" height="12" x="2" y="6" rx="3"></rect><circle cx="12" cy="12" r="2"></circle><path d="M6 12h.01"></path><path d="M18 12h.01"></path></svg>
-                            <span>Tesorería</span>
-                        </div>
-                        <div>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down dropdown-arrow"><path d="m6 9 6 6 6-6"></path></svg>
-                        </div>
-                    </button>
-                    
-                    {{-- CONTENEDOR DE SUB-ENLACES (Colapsable) --}}
-                    <div class="sidebar-dropdown-content" style="max-height: {{ request()->is('tesoreria/*') || request()->routeIs('tesoreria.*') ? '500px' : '0' }};">
-                        
-                        {{-- Sub-Módulo 1: Gestión de Cuotas (CRUD de Cuota) --}}
-                        <a href="#" class="sidebar-link sub-link {{ request()->routeIs('cuotas.*') ? 'sidebar-link-active' : 'sidebar-link-inactive' }}">
-                            <span>Gestión de Cuotas</span>
-                        </a>
-                        
-                        {{-- Sub-Módulo 2: Emisión y Control de Recibos --}}
-                        <a href="#" class="sidebar-link sub-link {{ request()->routeIs('recibos.*') ? 'sidebar-link-active' : 'sidebar-link-inactive' }}">
-                            <span>Recibos y Pagos</span>
-                        </a>
-                        
-                        {{-- Sub-Módulo 3: Contabilidad/Informes (Futuro) --}}
-                        <a href="#" class="sidebar-link sub-link sidebar-link-inactive">
-                            <span>Contabilidad / Informes</span>
-                        </a>
-                        
-                        {{-- Sub-Módulo 4: Configuración (ej: Parámetros de cobro) --}}
-                        <a href="#" class="sidebar-link sub-link sidebar-link-inactive">
-                            <span>Configuración Tesorería</span>
-                        </a>
-                        
-                    </div>
-                </div>
+                <a href="{{ route('tesoreria.dashboard') }}" class="sidebar-link sidebar-link-inactive">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-euro-icon lucide-euro"><path d="M4 10h12"/><path d="M4 14h9"/><path d="M19 6a7.7 7.7 0 0 0-5.2-2A7.9 7.9 0 0 0 6 12c0 4.4 3.5 8 7.8 8 2 0 3.8-.8 5.2-2"/></svg>
+                    Contabilidad
+                </a>
+
+                <a href="{{ route('movimientos.index') }}" class="sidebar-link sidebar-link-inactive">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-table-properties-icon lucide-table-properties"><path d="M15 3v18"/><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M21 9H3"/><path d="M21 15H3"/></svg>
+                    Movimientos
+                </a>
+
+                <a href="{{ route('cuentas.index') }}" class="sidebar-link sidebar-link-inactive">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-landmark-icon lucide-landmark"><path d="M10 18v-7"/><path d="M11.12 2.198a2 2 0 0 1 1.76.006l7.866 3.847c.476.233.31.949-.22.949H3.474c-.53 0-.695-.716-.22-.949z"/><path d="M14 18v-7"/><path d="M18 18v-7"/><path d="M3 22h18"/><path d="M6 18v-7"/></svg>
+                    Cuentas
+                </a>
+
+                <a href="#" class="sidebar-link sidebar-link-inactive">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-wallet-icon lucide-wallet"><path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1"/><path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4"/></svg>
+                    Cuotas
+                </a>
 
                 <a href="#" class="sidebar-link sidebar-link-inactive">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-file-text" aria-hidden="true"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"></path><path d="M14 2v4a2 2 0 0 0 2 2h4"></path><path d="M10 9H8"></path><path d="M16 13H8"></path><path d="M16 17H8"></path></svg>
                     Documentos
                 </a>
                 
+                <h3 class="menu-title">Mayordomía</h3>
+                
                 <a href="#" class="sidebar-link sidebar-link-inactive">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-box" aria-hidden="true"><path d="M21 8a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2z"></path><path d="M12 2v4"></path><path d="M12 18v4"></path><path d="M18 10h-2"></path><path d="M8 10H6"></path></svg>
                     Inventario
                 </a>
+
+                <h3 class="menu-title">Gobierno</h3>
 
                 <a href="#" class="sidebar-link sidebar-link-inactive">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-calendar" aria-hidden="true"><path d="M8 2v4"></path><path d="M16 2v4"></path><rect width="18" height="18" x="3" y="4" rx="2"></rect><path d="M3 10h18"></path></svg>
@@ -157,7 +181,7 @@
                             <div class="text-left">
                                 <p class="user-name">{{ Auth::user()->nombre }} {{ Auth::user()->apellidos }}</p>
                                 {{-- Usamos la relación para obtener el nombre del rol --}}
-                                <p class="user-role">{{ Auth::user()->rol->nombre ?? 'N/A' }}</p>
+                                <p class="user-role">{{ Auth::user()->rol->nombre ?? 'Sin rol asignado' }}</p>
                             </div>
                         </div>
     
@@ -275,7 +299,7 @@
                             <input type="password" id="profile_password_confirmation" name="password_confirmation" class="form-input" placeholder="Repite la nueva contraseña">
                         </div>
                            
-                        <div class="form-actions">
+                        <div class="form-actions" style="padding-bottom:2rem">
                             <button type="submit" class="btn btn-primary" style="width:100%">
                                 Guardar Cambios
                             </button>
@@ -319,7 +343,7 @@
                     });
                 }
 
-                // 1. Cargar la preferencia al inicio (si existe)
+                //1. Cargar la preferencia al inicio (si existe)
                 const savedTheme = localStorage.getItem('theme');
                 const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches; // Preferencia del sistema operativo
 

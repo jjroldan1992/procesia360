@@ -9,7 +9,7 @@
             
         <div class="card-header">
             <h1>Editando a {{ $hermano->nombre }} {{ $hermano->apellido }}</h1>
-            <a href="{{ route('censo.index') }}" class="btn btn-secondary">
+            <a href="{{ route('censo.index') }}" class="btn btn-back">
                 ← Volver al Censo
             </a>
         </div>

@@ -14,7 +14,7 @@
                 
                     <div class="card-header">
                         <h1>Crear Registro de Hermano</h1>
-                        <a href="{{ route('censo.index') }}" class="btn btn-secondary">
+                        <a href="{{ route('censo.index') }}" class="btn btn-back">
                             ← Volver al Censo
                         </a>
                     </div>

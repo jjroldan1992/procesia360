@@ -13,7 +13,7 @@
 
         <div class="content-card">
             
-            <div class="table-header-controls">
+            <div class="table-header-controls controles-censo">
                 
                 {{-- Formulario de Búsqueda --}}
                 <form method="GET" action="{{ route('censo.index') }}" class="search-form">
@@ -66,22 +66,29 @@
                         
                         {{-- Filtro: Hermanos Activos --}}
                         <label class="checkbox-container">
-                            <input type="radio" name="filter_type" value="activos" checked>
-                            Hermanos Activos
+                            <input type="radio" name="filter_type" value="completo" checked>
+                            Listado completo
+                            <span class="checkmark"></span>
+                        </label>
+
+                        {{-- Filtro: Hermanos Activos --}}
+                        <label class="checkbox-container">
+                            <input type="radio" name="filter_type" value="activos">
+                            Hermanos actuales
                             <span class="checkmark"></span>
                         </label>
                         
                         {{-- Filtro: Hermanos de Baja --}}
                         <label class="checkbox-container">
                             <input type="radio" name="filter_type" value="baja">
-                            Hermanos de Baja (No computan)
+                            Dados de baja
                             <span class="checkmark"></span>
                         </label>
 
                         {{-- Filtro: Listado de Difuntos (Fallecidos) --}}
                         <label class="checkbox-container">
                             <input type="radio" name="filter_type" value="difuntos">
-                            Listado de Difuntos
+                            Difuntos de la {{ config('app.cliente_tipo') }}
                             <span class="checkmark"></span>
                         </label>
                     </div>
@@ -96,24 +103,24 @@
                         {{-- Filtro: Hermanos con Cuotas Pendientes (Necesario en Tesorería) --}}
                         <label class="checkbox-container">
                             <input type="radio" name="filter_type" value="cuotas_pendientes">
-                            Hermanos con Cuotas sin Pagar (Pendientes)
+                            Hermanos con cuotas pendientes
                             <span class="checkmark"></span>
                         </label>
                         
                         {{-- Filtro: Solo Menores de Edad --}}
                         <label class="checkbox-container">
                             <input type="radio" name="filter_type" value="menores_edad">
-                            Solo Hermanos Menores de Edad
+                            Hermanos menores de edad
                             <span class="checkmark"></span>
                         </label>
                     </div>
                 </div>
 
                 <div class="form-actions" style="justify-content: flex-end;">
-                    <button type="button" class="btn btn-secondary" id="cancel-export-modal">Cancelar</button>
-                    <button type="submit" class="btn btn-success">
+                    <button type="button" class="btn btn-back" id="cancel-export-modal">Cancelar</button>
+                    <button type="submit" class="btn btn-secondary">
                         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-file-text"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"></path><path d="M14 2v4a2 2 0 0 0 2 2h4"></path></svg>
-                        Exportar
+                        &nbsp;Descargar .xls
                     </button>
                 </div>
             </form>

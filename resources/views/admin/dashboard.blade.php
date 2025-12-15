@@ -72,6 +72,9 @@
                 <a href="{{ route('censo.create') }}" class="btn btn-success" style="display: block; margin-bottom: 10px;">
                     + Añadir Nuevo Hermano
                 </a>
+                <a href="{{ route('censo.create') }}" class="btn btn-back" style="display: block; margin-bottom: 10px;">
+                    + Añadir Nuevo Hermano
+                </a>
             </div>
         </div>
         
