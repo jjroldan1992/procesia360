@@ -7,6 +7,8 @@ use App\Models\CuentaContable;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 
+use Illuminate\Support\Facades\Storage;
+
 class MovimientoController extends Controller
 {
     /**
@@ -52,14 +54,19 @@ class MovimientoController extends Controller
             'fecha'              => 'required|date',
             'cantidad'           => 'required|numeric|min:0.01',
             'documento_referencia' => 'nullable|string|max:50',
+            'comprobante'        => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
         ]);
-        
-        // 2. Creación del Movimiento
-        Movimiento::create($validatedData);
 
-        // 3. Redirección
-        $tipoMovimiento = $validatedData['tipo'];
-        return redirect()->route('tesoreria.dashboard')->with('success', $tipoMovimiento . ' registrado correctamente. El saldo de la cuenta ha sido actualizado.');
+        $data = $request->all();
+
+        if ($request->hasFile('comprobante')) {
+            // Guarda el archivo en storage/app/public/comprobantes
+            $path = $request->file('comprobante')->store('comprobantes', 'public');
+            $data['comprobante_path'] = $path;
+        }
+
+        Movimiento::create($data);
+        return redirect()->back()->with('success', 'Movimiento guardado con éxito');
     }
 
     /**
@@ -148,12 +155,23 @@ class MovimientoController extends Controller
             'fecha'              => 'required|date',
             'cantidad'           => 'required|numeric|min:0.01',
             'documento_referencia' => 'nullable|string|max:50',
+            'comprobante' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
         ]);
         
-        // 2. Actualización del Movimiento
-        $movimiento->update($validatedData);
+        $data = $request->all();
 
-        // 3. Redirección
+        if (isset($movimiento) && $movimiento->comprobante_path) {
+            Storage::disk('public')->delete($movimiento->comprobante_path);
+        }
+
+        if ($request->hasFile('comprobante')) {
+            // Guarda el archivo en storage/app/public/comprobantes
+            $path = $request->file('comprobante')->store('comprobantes', 'public');
+            $data['comprobante_path'] = $path;
+        }
+
+        $movimiento->update($data);
+        
         return redirect()->route('movimientos.index')->with('success', 'Movimiento actualizado correctamente. El saldo de la cuenta ha sido recalculado.');
     }
 

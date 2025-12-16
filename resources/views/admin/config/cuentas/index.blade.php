@@ -13,10 +13,15 @@
 
         <div class="content-card">
 
-            <div class="table-header-controls">
+            <div class="table-header-controls controles-tabla-dinamica">
+
+                <a href="{{ route('config.index') }}" class="btn btn-back">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-big-left-dash-icon lucide-arrow-big-left-dash"><path d="M13 9a1 1 0 0 1-1-1V5.061a1 1 0 0 0-1.811-.75l-6.835 6.836a1.207 1.207 0 0 0 0 1.707l6.835 6.835a1 1 0 0 0 1.811-.75V16a1 1 0 0 1 1-1h2a1 1 0 0 0 1-1v-4a1 1 0 0 0-1-1z"/><path d="M20 9v6"/></svg>
+                    &nbsp;Configuración
+                </a>
 
                 {{-- Botón de Creación --}}
-                <a href="{{ route('cuentas.create') }}" class="btn btn-primary">
+                <a href="{{ route('config.cuentas.create') }}" class="btn btn-primary">
                     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-plus"><path d="M5 12h14"></path><path d="M12 5v14"></path></svg>
                     Añadir Cuenta
                 </a>
@@ -94,12 +99,12 @@
                                 <td data-label="Acciones" class="action-buttons-cell">
                                     
                                     {{-- Botón de Edición --}}
-                                    <a href="{{ route('cuentas.edit', $cuenta) }}" class="icon-btn" title="Editar">
+                                    <a href="{{ route('config.cuentas.edit', $cuenta) }}" class="icon-btn" title="Editar">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-pencil"><path d="M17 3a2.85 2.85 0 0 0-4 0L7 13.06l-.55 3.91 3.91-.55L21 7.06a2.85 2.85 0 0 0 0-4Z"></path><path d="m15 5 4 4"></path></svg>
                                     </a>
 
                                     {{-- Botón de Eliminación
-                                    <form action="{{ route('cuentas.destroy', $cuenta) }}" method="POST" class="inline-delete-form">
+                                    <form action="{{ route('config.cuentas.destroy', $cuenta) }}" method="POST" class="inline-delete-form">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" onclick="return confirm('¿Está seguro de que desea eliminar la cuenta contable: {{ $cuenta->nombre }}? Advertencia: Si tiene movimientos asociados, esto podría causar errores en el sistema contable.')" class="icon-btn delete-btn" title="Eliminar">

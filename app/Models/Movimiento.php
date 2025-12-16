@@ -19,6 +19,7 @@ class Movimiento extends Model
         'fecha',
         'cantidad',
         'documento_referencia',
+        'comprobante_path'
         // 'categoria_id', // Cuando se implemente
     ];
 

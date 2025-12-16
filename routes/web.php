@@ -6,6 +6,8 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\CensoController;
 use App\Http\Controllers\CuentaContableController;
 use App\Http\Controllers\MovimientoController;
+use App\Http\Controllers\ConfigController;
+use App\Http\Controllers\DocumentoController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -18,14 +20,33 @@ Route::post('/logout', [App\Http\Controllers\AuthController::class, 'logout'])->
 
 // Debe tener el nombre 'dashboard'
 Route::middleware(['auth'])->group(function () {
+    
     Route::get('censo/export', [CensoController::class, 'export'])->name('censo.export');
+    
     Route::get('/dashboard', [HomeController::class, 'dashboard'])->name('dashboard');
+    
     Route::resource('censo', App\Http\Controllers\CensoController::class)->parameters([
         'censo' => 'hermano', // Le decimos a Laravel: para la URL /censo/{param}, usa 'hermano'
     ]);
+    
     Route::put('/profile', [App\Http\Controllers\UserProfileController::class, 'update'])->name('profile.update');
-    Route::resource('cuentas', CuentaContableController::class);
+    
     Route::get('tesoreria/contabilidad', [MovimientoController::class, 'dashboard'])->name('tesoreria.dashboard');
+    
     Route::resource('movimientos', MovimientoController::class)->except(['index', 'show']);
+    
     Route::get('movimientos/listado', [MovimientoController::class, 'index'])->name('movimientos.index');
+    
+    Route::prefix('configuracion')->name('config.')->group(function () {
+        Route::get('/', [ConfigController::class, 'index'])->name('index'); 
+        Route::resource('tarifas', App\Http\Controllers\CuotaTarifaController::class)->names('tarifas');
+        Route::resource('cuentas', App\Http\Controllers\CuentaContableController::class)->names('cuentas');
+    });
+    
+    Route::prefix('documentos')->name('documentos.')->group(function () {
+        Route::get('/{path?}', [DocumentoController::class, 'index'])->name('index')->where('path', '.*');
+        Route::post('/upload', [DocumentoController::class, 'upload'])->name('upload');
+        Route::post('/mkdir', [DocumentoController::class, 'createFolder'])->name('createFolder');
+        Route::delete('/delete', [DocumentoController::class, 'destroy'])->name('destroy');
+    });
 });

@@ -24,7 +24,7 @@
     --color-btn-primary: #FFFFFF;
     --bg-color-btn-primary-hover: #343A40;
     --border-color-btn-primary: 1px solid #343A40;
-    --bg-color-btn-secondary: #0D9488;
+    --bg-color-btn-secondary: var(--color-primary);
     --color-btn-secondary: #FFFFFF;
     --bg-color-btn-secondary-hover: #067C6F;
     --bg-color-btn-success: #28A745;
@@ -42,6 +42,7 @@
     --color-danger: #DC3545;
     --bg-color-list-item: #E8E8E8;
     --color-list-item: #343A40;
+    --bg-hover-file-item: rgba(0, 0, 0, 0.1);
 }
 
 html.dark {
@@ -62,6 +63,7 @@ html.dark {
     --bg-color-list-item: #343A40;
     --color-list-item: #E8E8E8;
     --border-color: #353535;
+    --bg-hover-file-item: rgba(255, 255, 255, 0.1);
 }
 
 /* =================================== */
@@ -181,7 +183,7 @@ main::-webkit-scrollbar-track,
 aside::-webkit-scrollbar-track,
 .offcanvas-panel::-webkit-scrollbar-track,
 main::-webkit-scrollbar-track {
-    background-color: var(--color-background); /* Usa el fondo del tema actual */
+    background-color: var(--color-sidebar-bg);; /* Usa el fondo del tema actual */
 }
 
 /* 3. El pulgar (thumb) que arrastras: Usamos el color Primario (Teal) */
@@ -405,12 +407,48 @@ button {
     gap: 1rem;
 }
 
+.section-four-cols {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 1rem;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
 /* Tarjeta de Contenido General */
 .content-card {
     background-color: var(--color-sidebar-bg);
     border-radius: var(--radius-md);
     padding: 20px;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.configuration-card {
+    cursor: pointer;
+}
+
+.configuration-card > a {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    text-decoration: none;
+    gap: 1rem;
+}
+
+.configuration-card > a > div:nth-child(1) {
+    background-color: #067C6F;
+    color: white;
+    padding: 0.8rem 1rem;
+    border-radius: 36px;
+}
+
+.configuration-card > a > div > h2 {
+    font-size: var(--text-sm);
+}
+
+.configuration-card > a > div > p {
+    font-size: var(--text-xs);
+    color: var(--color-text-muted);
 }
 
 .content-card-element {
@@ -498,7 +536,7 @@ button {
     border-bottom: 1px solid var(--border-color);
 }
 
-.table-header-controls.controles-censo {
+.table-header-controls.controles-tabla-dinamica {
     justify-content: space-between;
 }
 
@@ -1081,7 +1119,8 @@ button {
     }
     
     /* 3. Secciones: Poner las dos columnas en una sola pila */
-    .section-two-cols {
+    .section-two-cols,
+    .section-four-cols {
         grid-template-columns: 1fr;
     }
     
@@ -1101,10 +1140,14 @@ button {
         font-size: var(--text-sm);
     }
 
-
-    .branding > div > .app-subtitle {
+    .branding > div > .app-subtitle,
+    .texto-en-boton {
         display: none;
     }
+}
+
+.font-bold {
+    font-weight: bold;
 }
 
 /* Estilos para el botón de menú móvil */
@@ -1132,7 +1175,6 @@ button {
 .menu-header {
     margin-bottom: 2rem;
     padding: 2rem;;
-    border-bottom: 1px solid var(--border-color);
 }
 
 .header-title {
@@ -1709,4 +1751,156 @@ button {
         right: auto;
         left: 0; 
     }
+}
+
+.config-card {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 20px;
+    background-color: var(--color-card-bg); /* o white */
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    text-decoration: none; /* Asegura que el enlace no tenga subrayado */
+    cursor: pointer;
+}
+
+.icon-circle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.explorer-container {
+    overflow: hidden;
+}
+
+.explorer-toolbar {
+    padding: 0 0 1rem 0;
+    border-bottom: 1px solid var(--border-color);
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    gap: 1px;
+}
+
+.explorer-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+    gap: 2px;
+    margin-top: 1rem;
+}
+
+.explorer-item {
+    padding: 15px;
+    text-align: center;
+    border-radius: 10px;
+    transition: background 0.2s;
+    border: 1px solid transparent;
+}
+
+/* Mejoras para los iconos de carpeta */
+.explorer-item.folder .item-icon {
+    color: #fbbf24; /* Color ámbar/amarillo para carpetas */
+    font-size: 3rem;
+    filter: drop-shadow(2px 2px 2px rgba(0,0,0,0.1));
+}
+
+.explorer-item.folder,
+.item-name {
+    text-decoration: none;
+    color: var(--color-text-default);
+}
+
+.explorer-item.file .item-icon {
+    font-size: 3rem;
+    filter: drop-shadow(2px 2px 2px rgba(0,0,0,0.1));
+    margin-bottom: 10px !important;
+}
+
+.explorer-item.folder-back .item-icon {
+    font-size: 2rem;
+    color: var(--text-muted);
+}
+
+.explorer-item:hover {
+    background: var(--bg-hover-file-item);
+    cursor: pointer;
+}
+
+.icon-file {
+    width: 60px;
+    height: 75px;
+    margin: 0 auto 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    border-radius: 4px;
+    position: relative;
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
+}
+
+.item-name {
+    font-size: 0.85rem;
+    font-weight: 600;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.item-details { font-size: 0.7rem; color: #666; margin-top: 4px; }
+
+.explorer-grid.view-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0; /* Sin espacio entre filas para que parezca una lista */
+}
+
+.view-list .explorer-item {
+    display: flex;
+    align-items: center;
+    text-align: left;
+    padding: 8px 15px;
+    border-radius: 0;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.view-list .explorer-item .item-icon {
+    width: 32px !important;
+    height: 32px !important;
+    font-size: 1.5rem !important;
+    margin-bottom: 0 !important;
+    padding-top: 10px !important;
+    margin: auto;
+    margin-right: 15px;
+    background-size: contain !important; /* Para las previsualizaciones de imagen */
+}
+
+/* Ajuste de SVG en lista */
+.view-list .explorer-item svg {
+    width: 24px !important;
+    height: 24px !important;
+}
+
+.view-list .item-name {
+    font-size: 0.95rem;
+    flex-grow: 1;
+}
+
+/* Estilo para los botones de control */
+button.active-view {
+    background-color: var(--bg-color-btn-secondary);
+    color: white;
+}
+
+.explorer-item {
+    /* Evita que el navegador espere para ver si haces doble click para zoom */
+    touch-action: manipulation; 
+    /* Evita que se seleccione texto al hacer toques rápidos */
+    user-select: none;
+    -webkit-user-select: none;
 }

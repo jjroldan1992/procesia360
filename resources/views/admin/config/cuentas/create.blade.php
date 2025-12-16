@@ -7,7 +7,7 @@
 <div class="section-one-col">
 
     <div class="content-card">
-        <form action="{{ route('cuentas.store') }}" method="POST">
+        <form action="{{ route('config.cuentas.store') }}" method="POST">
             @csrf
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -69,7 +69,7 @@
 
             {{-- Botones de Acción --}}
             <div class="flex justify-end space-x-4">
-                <a href="{{ route('cuentas.index') }}" class="btn btn-back">Cancelar</a>
+                <a href="{{ route('config.cuentas.index') }}" class="btn btn-back">Cancelar</a>
                 <button type="submit" class="btn btn-primary">Guardar Cuenta</button>
             </div>
 
