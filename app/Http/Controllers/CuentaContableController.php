@@ -14,7 +14,7 @@ class CuentaContableController extends Controller
     {
         $cuentas = CuentaContable::orderBy('activa', 'desc')->orderBy('nombre', 'asc')->get();
         
-        return view('admin.cuentas.index', compact('cuentas'));
+        return view('admin.config.cuentas.index', compact('cuentas'));
     }
 
     /**
@@ -22,7 +22,7 @@ class CuentaContableController extends Controller
      */
     public function create()
     {
-        return view('admin.cuentas.create');
+        return view('admin.config.cuentas.create');
     }
 
     /**
@@ -53,7 +53,7 @@ class CuentaContableController extends Controller
         // 2. Creación de la cuenta
         CuentaContable::create($validatedData);
 
-        return redirect()->route('cuentas.index')->with('success', 'Cuenta contable creada con éxito.');
+        return redirect()->route('config.cuentas.index')->with('success', 'Cuenta contable creada con éxito.');
     }
 
     // ... (Métodos show, edit, update, destroy - se rellenan después) ...
@@ -61,24 +61,20 @@ class CuentaContableController extends Controller
     public function show(CuentaContable $cuenta)
     {
         // No implementaremos una vista de detalle compleja por ahora. Redireccionamos a la edición.
-        return redirect()->route('cuentas.edit', $cuenta);
+        return redirect()->route('config.cuentas.edit', $cuenta);
     }
     
-    public function edit(CuentaContable $cuenta)
+    public function edit(CuentaContable $cuenta) // Asegúrate que aquí se llame $cuenta
     {
-        return view('admin.cuentas.edit', compact('cuenta'));
+        return view('admin.config.cuentas.edit', compact('cuenta'));
     }
 
-    public function update(Request $request, CuentaContable $cuenta)
+    public function update(Request $request, CuentaContable $cuenta) // Y aquí también $cuenta
     {
-        // 1. Reglas de validación
         $rules = [
             'nombre' => 'required|string|max:100',
             'tipo' => 'required|in:Banco,Efectivo',
-            'saldo_inicial' => 'required|numeric',
             'entidad' => 'nullable|string|max:100',
-            'activa' => 'boolean',
-            // El saldo actual no se permite editar aquí, solo se cambia con movimientos.
         ];
 
         if ($request->input('tipo') === 'Banco') {
@@ -88,18 +84,19 @@ class CuentaContableController extends Controller
         }
 
         $validatedData = $request->validate($rules);
+        
+        // IMPORTANTE: Para los checkbox, si no se marcan, no viajan en el request.
         $validatedData['activa'] = $request->has('activa');
         
-        // 2. Actualización de la cuenta
         $cuenta->update($validatedData);
 
-        return redirect()->route('cuentas.index')->with('success', 'Cuenta contable actualizada con éxito.');
+        return redirect()->route('config.cuentas.index')->with('success', 'Cuenta contable actualizada con éxito.');
     }
 
     public function destroy(CuentaContable $cuenta)
     {
         // NOTA: Se debería verificar si hay movimientos asociados antes de eliminar
         $cuenta->delete();
-        return redirect()->route('cuentas.index')->with('success', 'Cuenta contable eliminada con éxito.');
+        return redirect()->route('config.cuentas.index')->with('success', 'Cuenta contable eliminada con éxito.');
     }
 }

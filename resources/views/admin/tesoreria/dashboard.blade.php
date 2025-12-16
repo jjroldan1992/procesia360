@@ -29,7 +29,7 @@
                     Nuevo Ingreso
                 </button>
                 <button type="button" id="add-gasto-btn" class="btn btn-danger">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-down-right-icon lucide-arrow-down-right"><path d="m7 7 10 10"/><path d="M17 7v10H7"/></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-down-right-icon lucide-arrow-down-right"><path d="m7 7 10 10"/><path d="M17 7v10H7"/></svg>
                     Nuevo Gasto
                 </button>
             </div>
@@ -85,9 +85,9 @@
                                     'bg-danger-light' => $movimiento->tipo === 'Gasto',
                                 ])>
                                     @if ($movimiento->tipo === 'Ingreso')
-                                        <svg xmlns="http://www.w3.org/2000/svg" style="color:green;" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-plus-icon lucide-plus"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
+                                        <svg xmlns="http://www.w3.org/2000/svg" style="color:green;" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-plus-icon lucide-plus"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
                                     @else
-                                        <svg xmlns="http://www.w3.org/2000/svg" style="color:red;" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-minus-icon lucide-minus"><path d="M5 12h14"/></svg>
+                                        <svg xmlns="http://www.w3.org/2000/svg" style="color:red;" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-minus-icon lucide-minus"><path d="M5 12h14"/></svg>
                                     @endif
                                 </span>
                                 {{-- Concepto y Fecha --}}
@@ -95,6 +95,15 @@
                                     <span class="text-default">{{ $movimiento->concepto }}</span>
                                     <p class="text-muted">{{ $movimiento->fecha->format('d/m/Y') }} &middot; {{ $movimiento->cuentaContable->nombre }}</p>
                                 </div>
+                                
+                                @if($movimiento->comprobante_path)
+                                    <div>
+                                        <a href="{{ asset('storage/' . $movimiento->comprobante_path) }}" target="_blank" class="text-blue-500" title="Ver comprobante">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-paperclip"><path d="m21.44 11.05-9.19 9.19a6 6 0 0 1-8.49-8.49l8.57-8.57A4 4 0 1 1 18 8.84l-8.59 8.51a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>
+                                        </a>
+                                    </div>
+                                @endif
+
                             </div>
                             {{-- Cantidad --}}
                             <span class="text-default font-bold 
@@ -125,11 +134,11 @@
                         </li>
                     @empty
                          <p class="text-muted">No hay cuentas activas. Añade una para registrar movimientos.</p>
-                         <a href="{{ route('cuentas.create') }}" class="text-primary-link block-link">Crear cuenta</a>
+                         <a href="{{ route('config.cuentas.create') }}" class="text-primary-link block-link">Crear cuenta</a>
                     @endforelse
                 </ul>
                 <div class="content-footer-link">
-                    <a href="{{ route('cuentas.index') }}" class="text-primary-link">Ver todas las cuentas</a>
+                    <a href="{{ route('config.cuentas.index') }}" class="text-primary-link">Ver todas las cuentas</a>
                 </div>
             </div>
 

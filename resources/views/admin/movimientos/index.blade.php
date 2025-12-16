@@ -7,7 +7,7 @@
     <div class="section-one-col">
         <div class="content-card">
 
-            <div class="table-header-controls controles-censo">
+            <div class="table-header-controls controles-tabla-dinamica">
 
                 <form action="{{ route('movimientos.index') }}" method="GET" class="search-form" id="search-form-movimientos">
                     <input type="text" name="search" id="search-input-movimientos" placeholder="Buscar concepto o referencia..." class="search-input" value="{{ request('search') }}">
@@ -44,7 +44,7 @@
                         Nuevo Ingreso
                     </button>
                     <button type="button" id="add-gasto-btn-page" class="btn btn-danger">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-down-right-icon lucide-arrow-down-right"><path d="m7 7 10 10"/><path d="M17 7v10H7"/></svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-down-right-icon lucide-arrow-down-right"><path d="m7 7 10 10"/><path d="M17 7v10H7"/></svg>
                         Nuevo Gasto
                     </button>
                 </div>
@@ -78,6 +78,9 @@
                                 </th>
                                 <th>Tipo</th>
                                 <th>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-paperclip"><path d="m21.44 11.05-9.19 9.19a6 6 0 0 1-8.49-8.49l8.57-8.57A4 4 0 1 1 18 8.84l-8.59 8.51a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>
+                                </th>
+                                <th>
                                     <a href="{{ $getSortUrl('concepto') }}" class="sortable-header">Concepto {!! $getSortIcon('concepto') !!}</a>
                                 </th>
                                 <th>Ref. Doc.</th>
@@ -104,6 +107,16 @@
                                             {{ $movimiento->tipo === 'Ingreso' ? 'status-success' : 'status-danger' }}">
                                             {{ $movimiento->tipo }}
                                         </span>
+                                    </td>
+
+                                    <td data-label="Doc">
+                                        @if($movimiento->comprobante_path)
+                                            <a href="{{ asset('storage/' . $movimiento->comprobante_path) }}" target="_blank" class="text-blue-500" title="Ver comprobante">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-paperclip"><path d="m21.44 11.05-9.19 9.19a6 6 0 0 1-8.49-8.49l8.57-8.57A4 4 0 1 1 18 8.84l-8.59 8.51a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>
+                                            </a>
+                                        @else
+                                            <span class="text-gray-300">-</span>
+                                        @endif
                                     </td>
                                     
                                     <td data-label="Concepto">

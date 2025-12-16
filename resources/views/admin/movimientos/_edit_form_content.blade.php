@@ -7,11 +7,11 @@
     <h3>Editar Movimiento</h3>
     {{-- Usamos la clase de cierre estándar --}}
     <button type="button" class="close-offcanvas-btn close-modal-btn">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg>
     </button>
 </div>
 
-<form id="edit-movimiento-form" method="POST" action="">
+<form id="edit-movimiento-form" method="POST" action="" enctype="multipart/form-data">
     @csrf
     @method('PATCH')
 
@@ -61,8 +61,12 @@
     <div class="form-group">
         <label for="edit-documento_referencia">Documento de Referencia (Opcional)</label>
         <input type="text" name="documento_referencia" id="edit-documento_referencia" class="form-input @error('documento_referencia') is-invalid @enderror">
-        <small class="text-muted">Ej: Nº de Factura, Nº de Recibo.</small>
         @error('documento_referencia')<small class="text-danger">{{ $message }}</small>@enderror
+    </div>
+
+    <div class="form-group">
+        <label for="comprobante">Adjuntar Comprobante (PDF o Imagen)</label>
+        <input type="file" name="comprobante" id="comprobante" class="form-input" accept="image/*,.pdf">
     </div>
 
 
