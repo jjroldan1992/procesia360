@@ -17,7 +17,7 @@ class HermanoSeeder extends Seeder
         // El control de claves foráneas lo hace DatabaseSeeder.
         
         // 1. TRUNCAR TABLAS RELACIONADAS (limpieza segura)
-        
+        //Lo quito, limpiar bases de datos a mano
         
         // 2. Crear 50 hermanos con datos simulados
         Hermano::factory()->count(769)->create();
