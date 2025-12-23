@@ -107,6 +107,7 @@ h3.menu-title {
 
 .sidebar nav {
     margin:1rem;
+    padding-bottom: 2rem;
 }
 
 /* Botones/Enlaces del Menú */
@@ -402,6 +403,8 @@ button {
 }
 
 .section-three-cols {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     gap: 1rem;
@@ -842,7 +845,7 @@ button {
     position: fixed;
     top: 0;
     right: 0;
-    max-width: 325px; /* Ancho solicitado */
+    width: 325px; /* Ancho solicitado */
     height: 100%;
     background-color: var(--color-background); 
     box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
@@ -913,6 +916,7 @@ button {
 
 .form-group {
     padding-bottom: 0.5rem; /* Pequeño padding para manejar posibles errores */
+    margin-bottom: 0.5rem;
 }
 
 /* Etiquetas (Labels) */
@@ -951,6 +955,11 @@ button {
     background-color: var(--color-link-hover-bg); /* Fondo gris suave */
     color: var(--color-text-muted);
     cursor: not-allowed;
+}
+
+.form-input[type=color] {
+    padding: unset;
+    border: unset;
 }
 
 /* Estilo para los mensajes de error de Laravel */
@@ -1271,9 +1280,15 @@ button {
     color: var(--color-text-default); /* Oscurecer al pasar el ratón */
 }
 
-.js-clickable-row {
+.js-clickable-row,
+.js-clickable-row > a {
     cursor:pointer;
+    color: var(--color-text-muted);
+    font-weight: var(--font-weight-medium);
+    text-decoration: none;
 }
+
+
 
 .content-card > h3 {
     margin-top: 0;
@@ -1903,4 +1918,13 @@ button.active-view {
     /* Evita que se seleccione texto al hacer toques rápidos */
     user-select: none;
     -webkit-user-select: none;
+}
+
+.flex {
+    display: flex;
+}
+
+.action-buttons-posts {
+    gap:5px;
+    justify-content: flex-end;
 }

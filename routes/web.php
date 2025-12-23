@@ -8,6 +8,10 @@ use App\Http\Controllers\CuentaContableController;
 use App\Http\Controllers\MovimientoController;
 use App\Http\Controllers\ConfigController;
 use App\Http\Controllers\DocumentoController;
+use App\Http\Controllers\PostController;
+use App\Http\Controllers\WebSettingController;
+use App\Http\Controllers\ModuleController;
+use App\Http\Controllers\NavMenuController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -48,5 +52,15 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/upload', [DocumentoController::class, 'upload'])->name('upload');
         Route::post('/mkdir', [DocumentoController::class, 'createFolder'])->name('createFolder');
         Route::delete('/delete', [DocumentoController::class, 'destroy'])->name('destroy');
+    });
+
+    Route::prefix('admin/web')->name('admin.web.')->group(function () {
+        Route::resource('paginas', PostController::class);
+        Route::get('configuracion', [WebSettingController::class, 'index'])->name('config.index');
+        Route::post('configuracion/update', [WebSettingController::class, 'update'])->name('config.update');
+        Route::get('modulos', [ModuleController::class, 'index'])->name('modulos.index');
+        Route::post('modulos/toggle/{modulo}', [ModuleController::class, 'toggle'])->name('modulos.toggle');
+        Route::resource('modulos/menu', NavMenuController::class)->names('modulos.menu');
+        Route::post('modulos/menu/reorder', [NavMenuController::class, 'reorder'])->name('modulos.menu.reorder');
     });
 });

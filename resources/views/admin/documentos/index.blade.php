@@ -165,21 +165,27 @@
             });
         });
 
-        // Función unificada para seleccionar
         function ejecutarSeleccion(element, e) {
-            if (!e.ctrlKey && !e.metaKey) {
+            // Detectamos si es móvil por el tipo de evento o si el puntero es 'touch'
+            const isTouch = e.type.includes('touch') || (e.pointerType === 'touch');
+
+            // Lógica de deselección automática:
+            // En PC: Deselecciona si NO pulsas Ctrl/Cmd
+            // En Móvil: Solo deselecciona si no hay nada seleccionado aún (el primer toque selecciona, los siguientes suman)
+            if (!isTouch && !e.ctrlKey && !e.metaKey) {
                 document.querySelectorAll('.explorer-item').forEach(i => i.classList.remove('selected'));
                 selectedItems.clear();
             }
 
+            // Toggle de selección
             if (element.classList.contains('selected')) {
                 element.classList.remove('selected');
-                selectedItems.add(element.dataset.path); // Aseguramos que se mantenga si es click simple
-                // Nota: En móviles la deselección simple es más intuitiva si siempre selecciona
+                selectedItems.delete(element.dataset.path);
             } else {
                 element.classList.add('selected');
                 selectedItems.add(element.dataset.path);
             }
+
             updateToolbar();
         }
 
