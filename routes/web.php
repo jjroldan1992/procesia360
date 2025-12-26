@@ -1,17 +1,29 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\AuthController;
-use App\Http\Controllers\HomeController;
-use App\Http\Controllers\CensoController;
-use App\Http\Controllers\CuentaContableController;
-use App\Http\Controllers\MovimientoController;
-use App\Http\Controllers\ConfigController;
-use App\Http\Controllers\DocumentoController;
-use App\Http\Controllers\PostController;
-use App\Http\Controllers\WebSettingController;
-use App\Http\Controllers\ModuleController;
-use App\Http\Controllers\NavMenuController;
+
+use App\Http\Controllers\{
+    AuthController,
+    HomeController,
+    CensoController,
+    CuentaContableController,
+    MovimientoController,
+    ConfigController,
+    DocumentoController,
+    PostController,
+    WebSettingController,
+    ModuleController,
+    NavMenuController,
+    BannerController,
+    FastAccessController,
+    EventController,
+    GridConfigController,
+    SocialNetworkController,
+    TablonParroquialController,
+    ContactConfigController,
+    FooterLinkController,
+    FrontController
+};
 
 Route::get('/', function () {
     return view('welcome');
@@ -62,5 +74,22 @@ Route::middleware(['auth'])->group(function () {
         Route::post('modulos/toggle/{modulo}', [ModuleController::class, 'toggle'])->name('modulos.toggle');
         Route::resource('modulos/menu', NavMenuController::class)->names('modulos.menu');
         Route::post('modulos/menu/reorder', [NavMenuController::class, 'reorder'])->name('modulos.menu.reorder');
+        Route::resource('modulos/banners', BannerController::class)->names('modulos.banners');
+        Route::post('modulos/banners/reorder', [BannerController::class, 'reorder'])->name('modulos.banners.reorder');
+        Route::resource('modulos/accesos', FastAccessController::class)->names('modulos.accesos')->only(['index', 'store', 'destroy','edit','update']);
+        Route::post('modulos/accesos/reorder', [FastAccessController::class, 'reorder'])->name('modulos.accesos.reorder');
+        Route::resource('modulos/calendario', EventController::class)->names('modulos.calendario');
+        Route::get('modulos/grid', [GridConfigController::class, 'index'])->name('modulos.grid.index');
+        Route::put('modulos/grid', [GridConfigController::class, 'update'])->name('modulos.grid.update');
+        Route::get('modulos/redes', [SocialNetworkController::class, 'index'])->name('modulos.redes.index');
+        Route::post('modulos/redes', [SocialNetworkController::class, 'update'])->name('modulos.redes.update');
+        Route::resource('modulos/tablon', TablonParroquialController::class)->names('modulos.tablon');
+        Route::get('modulos/contacto', [ContactConfigController::class, 'index'])->name('modulos.contacto.index');
+        Route::post('modulos/contacto', [ContactConfigController::class, 'update'])->name('modulos.contacto.update');
+        Route::post('modulos/linklist/reorder', [FooterLinkController::class, 'reorder'])->name('modulos.linklist.reorder');
+        Route::resource('modulos/linklist', FooterLinkController::class)->names('modulos.linklist');
     });
 });
+
+// Ruta principal de la Web
+Route::get('/', [FrontController::class, 'home'])->name('web.home');

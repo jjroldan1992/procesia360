@@ -26,14 +26,6 @@
                             <label>Meta Descripción</label>
                             <textarea class="form-input" name="meta_description" rows="2">{{ $settings->meta_description }}</textarea>
                         </div>
-                        <div class="form-group">
-                            <label>Facebook (URL)</label>
-                            <input class="form-input" type="url" name="facebook_url" value="{{ $settings->facebook_url }}">
-                        </div>
-                        <div class="form-group">
-                            <label>Instagram (URL)</label>
-                            <input class="form-input" type="url" name="instagram_url" value="{{ $settings->instagram_url }}">
-                        </div>
 
                         <button type="submit" class="btn btn-primary">
                             Guardar Configuración
@@ -55,13 +47,12 @@
                         </div>
                     
                         <div class="form-group">
-                            <label>Plantilla Web</label>
-                            @foreach([1,2,3] as $tema)
-                            <label>
-                                <input type="radio" name="tema_id" value="{{ $tema }}" {{ $settings->tema_id == $tema ? 'checked' : '' }}>
-                                <span>Plantilla {{ $tema }}</span>
-                            </label>
-                            @endforeach
+                            <label class="form-label">Plantilla Visual de la Web</label>
+                            <select name="template" class="form-input">
+                                <option value="campanilleros" {{ $settings->template == 'campanilleros' ? 'selected' : '' }}>Campanilleros (Tradicional)</option>
+                                <option value="saeta" {{ $settings->template == 'saeta' ? 'selected' : '' }}>Saeta (Solemne)</option>
+                                <option value="mektub" {{ $settings->template == 'mektub' ? 'selected' : '' }}>Mektub (Moderna/Vanguardista)</option>
+                            </select>
                         </div>
 
                         <div class="form-group">

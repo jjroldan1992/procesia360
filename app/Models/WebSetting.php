@@ -7,9 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 class WebSetting extends Model
 {
     protected $fillable = [
-        'nombre_hermandad', 'logo_path', 'tema_id', 'color_primario', 
-        'color_secundario', 'modulos_config', 'meta_title', 
-        'meta_description', 'instagram_url', 'facebook_url'
+        'nombre_hermandad', 
+        'template', // Añadimos el nuevo
+        'escudo_path', 
+        'email_contacto', 
+        'modulos_config'
+        // 'tema_id' <-- Eliminado
     ];
 
     protected $casts = [

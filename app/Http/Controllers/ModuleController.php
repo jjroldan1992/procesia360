@@ -12,47 +12,47 @@ class ModuleController extends Controller
         'menu' => [
             'nombre' => 'Menú Principal', 
             'funcionalidad' => 'Configura los enlaces de navegación superior y el orden de las secciones.',
-            'route' => 'admin.web.modulos.menu'
+            'route' => 'admin.web.modulos.menu.index'
         ],
         'banners' => [
             'nombre' => 'Banners (Slider)', 
             'funcionalidad' => 'Gestión de imágenes y mensajes destacados en la cabecera.',
-            'route' => 'admin.web.modulos.banners'
+            'route' => 'admin.web.modulos.banners.index'
         ],
         'acceso_rapido' => [
             'nombre' => 'Acceso Rápido', 
             'funcionalidad' => 'Configuración de los 3 bloques: Historia, Hazte Hermano y Zona Privada.',
-            'route' => 'admin.web.modulos.accesos'
+            'route' => 'admin.web.modulos.accesos.index'
         ],
         'calendario' => [
             'nombre' => 'Calendario', 
             'funcionalidad' => 'Gestión de cultos, salidas procesionales y eventos.',
-            'route' => 'admin.web.modulos.calendario'
+            'route' => 'admin.web.modulos.calendario.index'
         ],
         'grid' => [
             'nombre' => 'Grid de Contenidos', 
             'funcionalidad' => 'Configura cómo se muestran las noticias y páginas recientes.',
-            'route' => 'admin.web.modulos.grid'
+            'route' => 'admin.web.modulos.grid.index'
         ],
         'social' => [
             'nombre' => 'Redes Sociales (Social Hub)', 
             'funcionalidad' => 'Gestión de integración con Instagram, Facebook y enlaces sociales.',
-            'route' => 'admin.web.modulos.social'
+            'route' => 'admin.web.modulos.redes.index'
         ],
-        'parroquia' => [
-            'nombre' => 'Tablón Parroquial', 
-            'funcionalidad' => 'Espacio informativo para noticias de la Sede Canónica.',
-            'route' => 'admin.web.modulos.parroquia'
+        'tablon' => [
+            'nombre' => 'Tablón Parroquial',
+            'route' => 'admin.web.modulos.tablon.index', // El nombre definido en web.php
+            'funcionalidad' => 'Gestiona los avisos, horarios de misa y comunicados de la parroquia.',
         ],
         'contacto' => [
-            'nombre' => 'Formulario de Contacto', 
-            'funcionalidad' => 'Configura el mapa, dirección y campos del formulario.',
-            'route' => 'admin.web.modulos.contacto'
+            'nombre' => 'Datos de Contacto', 
+            'funcionalidad' => 'Configura el mapa, dirección y campos de contacto de la corporación.',
+            'route' => 'admin.web.modulos.contacto.index'
         ],
         'link_list' => [
             'nombre' => 'Listado de Enlaces', 
             'funcionalidad' => 'Gestión de enlaces de interés y pies de página (Footer).',
-            'route' => 'admin.web.modulos.link_list'
+            'route' => 'admin.web.modulos.linklist.index'
         ]
     ];
 
