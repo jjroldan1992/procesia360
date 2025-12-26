@@ -45,8 +45,9 @@
                             </form>
 
                             {{-- Botón para Configurar --}}
-                            {{--<a class="btn btn-primary" href="{{ route($info['route'] ?? 'admin.web.modulos.index') }}">Configurar</a> --}}
-                            <a class="btn btn-primary" href="{{ route('admin.web.modulos.menu.index') }}">Configurar</a>
+                            
+                                <a class="btn btn-primary" href="{{ route($info['route']) }}">Configurar</a>
+                            
                         </div>
                     </td>
                 </tr>

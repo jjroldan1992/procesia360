@@ -43,13 +43,11 @@ class WebSettingController extends Controller
         
         $data = $request->validate([
             'nombre_hermandad' => 'required|string|max:255',
-            'tema_id' => 'required|integer|in:1,2,3',
+            'template' => 'required|in:campanilleros,saeta,mektub',
             'color_primario' => 'required|string',
             'color_secundario' => 'required|string',
             'meta_title' => 'nullable|string|max:255',
             'meta_description' => 'nullable|string',
-            'instagram_url' => 'nullable|url',
-            'facebook_url' => 'nullable|url',
             'logo' => 'nullable|image|mimes:png,jpg,jpeg,svg|max:1024'
         ]);
 
