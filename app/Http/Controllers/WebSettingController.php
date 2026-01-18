@@ -11,29 +11,29 @@ class WebSettingController extends Controller
     /**
      * Definición centralizada de los módulos para mantener coherencia
      */
-    protected $modulos_disponibles = [
-        'menu' => 'Menú Principal',
-        'banners' => 'Banners',
-        'acceso_rapido' => 'Acceso Rápido',
-        'calendario' => 'Calendario',
-        'grid' => 'Grid de páginas, noticias, comunicados,...',
-        'social' => 'Redes Sociales',
-        'parroquia' => 'Tablón Parroquial',
-        'contacto' => 'Formulario de contacto',
-        'link_list' => 'Listado de enlaces'
-    ];
+    // protected $modulos_disponibles = [
+    //     'menu' => 'Menú Principal',
+    //     'banners' => 'Banners',
+    //     'acceso_rapido' => 'Acceso Rápido',
+    //     'calendario' => 'Calendario',
+    //     'grid' => 'Grid de páginas, noticias, comunicados,...',
+    //     'social' => 'Redes Sociales',
+    //     'parroquia' => 'Tablón Parroquial',
+    //     'contacto' => 'Formulario de contacto',
+    //     'link_list' => 'Listado de enlaces'
+    // ];
 
     public function index()
     {
         // Recuperamos la configuración o creamos la fila inicial con todos los módulos en 'false' por defecto
         $settings = WebSetting::firstOrCreate(['id' => 1], [
             'nombre_hermandad' => 'Nueva Hermandad',
-            'modulos_config' => array_fill_keys(array_keys($this->modulos_disponibles), false)
+            // 'modulos_config' => array_fill_keys(array_keys($this->modulos_disponibles), false)
         ]);
 
         return view('admin.web.configuracion.index', [
             'settings' => $settings,
-            'items' => $this->modulos_disponibles
+            // 'items' => $this->modulos_disponibles
         ]);
     }
 
@@ -61,11 +61,11 @@ class WebSettingController extends Controller
 
         // 2. Gestión DINÁMICA de Módulos (JSON)
         // Recorremos las claves de nuestro array maestro y miramos si el checkbox vino en el request
-        $config = [];
-        foreach ($this->modulos_disponibles as $key => $label) {
-            $config[$key] = $request->has('mod_' . $key);
-        }
-        $data['modulos_config'] = $config;
+        // $config = [];
+        // foreach ($this->modulos_disponibles as $key => $label) {
+        //     $config[$key] = $request->has('mod_' . $key);
+        // }
+        // $data['modulos_config'] = $config;
 
         // 3. Actualización masiva
         $settings->update($data);
