@@ -1,0 +1,37 @@
+/* public/css/templates/mektub.css */
+:root {
+    --primary-color: #1a1a1a; /* Negro mate moderno */
+    --accent-color: #c5a059;  /* Dorado champán */
+    --bg-light: #f4f4f4;
+    --text-main: #333;
+}
+
+body.template-mektub {
+    font-family: 'Inter', sans-serif; /* O una sans-serif limpia */
+    background-color: var(--bg-light);
+    color: var(--text-main);
+    margin: 0;
+    line-height: 1.6;
+}
+
+header.mektub-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2rem 5%;
+    background: white;
+    border-bottom: 1px solid #ddd;
+}
+
+.mektub-logo img {
+    height: 60px;
+    filter: grayscale(100%); /* Efecto moderno */
+    transition: 0.3s;
+}
+
+.mektub-logo img:hover {
+    filter: grayscale(0%);
+}
+
+/* Clases de utilidad para el grid moderno */
+.section-padding { padding: 80px 5%; }

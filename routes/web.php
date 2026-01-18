@@ -93,3 +93,4 @@ Route::middleware(['auth'])->group(function () {
 
 // Ruta principal de la Web
 Route::get('/', [FrontController::class, 'home'])->name('web.home');
+Route::get('/{slug}', [FrontController::class, 'showPost'])->name('web.post.show');

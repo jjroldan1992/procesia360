@@ -1,5 +1,5 @@
 @extends('layouts.admin')
-@section('Title','Datos de contacto')
+@section('title','Datos de contacto')
 @section('content')
 <div class="section-one-col">
     <div class="content-card">
@@ -14,8 +14,8 @@
                 {{-- Columna Izquierda: Ubicación y Mapa --}}
                 <div>
                     <div class="form-group">
-                        <label class="form-label">Script de Google Maps (Iframe)</label>
-                        <textarea name="google_maps_script" class="form-input" rows="4" placeholder='Pega aquí el <iframe src="..."></iframe> de Google Maps'>{{ $config->google_maps_script }}</textarea>
+                        <label class="form-label">Script de Google Maps (Solo parámetro SRC)</label>
+                        <textarea name="google_maps_script" class="form-input" rows="4" placeholder='Introduce solamente el contenido del parámetro src="...."'>{{ $config->google_maps_script }}</textarea>
                     </div>
 
                     <div class="form-group">
