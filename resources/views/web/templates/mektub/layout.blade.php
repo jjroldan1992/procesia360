@@ -11,6 +11,8 @@
 
         <meta name="description" content="">
 
+        <meta name="robots" content="noindex, nofollow">
+
         <link rel="apple-touch-icon" href="apple-touch-icon.png">
         <link rel="stylesheet" href="{{ asset('css/templates/mektub/bootstrap.min.css') }}">
         <link rel="stylesheet" href="{{ asset('css/templates/mektub/bootstrap-theme.min.css') }}">
@@ -47,21 +49,21 @@
 
         <script>
             $(document).ready(function() {
-    $('.menu-item-has-children > a').on('click', function(e) {
-        e.preventDefault(); // Evita que navegue si es un padre
-        
-        var $submenu = $(this).next('.sub-menu');
-        var $indicator = $(this).find('.submenu-indicator');
+                $('.menu-item-has-children > a').on('click', function(e) {
+                    e.preventDefault(); // Evita que navegue si es un padre
+                    
+                    var $submenu = $(this).next('.sub-menu');
+                    var $indicator = $(this).find('.submenu-indicator');
 
-        // Cerrar otros submenús abiertos (opcional, estilo acordeón)
-        // $('.sub-menu').not($submenu).slideUp();
-        // $('.submenu-indicator').not($indicator).removeClass('rotated');
+                    // Cerrar otros submenús abiertos (opcional, estilo acordeón)
+                    // $('.sub-menu').not($submenu).slideUp();
+                    // $('.submenu-indicator').not($indicator).removeClass('rotated');
 
-        // Alternar el actual
-        $submenu.slideToggle(300);
-        $indicator.toggleClass('rotated');
-    });
-});
+                    // Alternar el actual
+                    $submenu.slideToggle(300);
+                    $indicator.toggleClass('rotated');
+                });
+            });
 
             // Hide Header on on scroll down
             var didScroll;

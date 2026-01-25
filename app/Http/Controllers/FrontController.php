@@ -105,6 +105,11 @@ class FrontController extends Controller
             });
         }
 
+         // 2. Accesos Rápidos (Cambio 'fast_access' por 'acceso_rapido')
+        if ($this->active($modulos, 'acceso_rapido')) {
+            $data['fast_access'] = FastAccess::orderBy('orden')->take(3)->get();
+        }
+
         return view("web.templates.{$template}.post", compact('settings', 'post', 'data'));
     }
 }
