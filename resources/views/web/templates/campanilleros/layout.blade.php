@@ -6,6 +6,7 @@
         <title>{{ $settings->nombre_hermandad }}</title>
         {{-- Aquí cargaríamos el CSS específico de esta plantilla --}}
         <link rel="stylesheet" href="{{ asset('css/templates/campanilleros.css') }}">
+        <meta name="robots" content="noindex, nofollow">
     </head>
     <body class="template-campanilleros">
         <p>Estás usando la plantilla "Campanilleros"</p>

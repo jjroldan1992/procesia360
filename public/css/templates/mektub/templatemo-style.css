@@ -22,7 +22,7 @@ p {
 }
 
 .content-section {
-  padding-top: 80px;
+  padding-top:7rem;
   position: relative;
   width: 100%;
   display: inline-block;
@@ -36,10 +36,22 @@ p {
   transform: translateX(-50%);
 }
 
-.section-heading {
+.section-heading,
+.page-title {
+  margin-right: 20%;
+  /* border-bottom: 10px solid; */
+  background: linear-gradient(to right, #ddd, #ffffff 75%);
+  padding: 1.5rem 2rem 0.8rem 2rem;
   text-align: left;
   position: relative;
-  margin-bottom: 60px;
+  margin-bottom: 5rem;
+  border-left: 10px solid var(--color_secundario);
+  font-weight: bold;
+  border-radius: 5px;
+}
+
+.page-title h1 {
+  font-weight: 900;
 }
 
 .section-heading h1 {
@@ -476,10 +488,6 @@ header {
   border-bottom: 1px solid #eee;
 }
 
-.grid .section-heading {
-  margin-right: 20%;
-}
-
 .grid .content-section {
   display: inline-block;
   position: relative;
@@ -639,6 +647,9 @@ header {
 .noticias_tablon {
   display: flex;
   gap: 20px;
+  justify-content: center;
+  align-items: flex-start;
+  flex-wrap: wrap;
 }
 
 .noticia_tablon {
@@ -759,9 +770,11 @@ header {
 
 /* Calendar Style */
 
-#calendario {
-  padding-left: 60px;
-  padding-right: 60px;
+#calendario,
+#actualidad,
+#tablon {
+  padding-left: 15px;
+  padding-right: 15px;
   padding-bottom: 80px;
 }
 
@@ -773,6 +786,7 @@ header {
   width: 100%;
   background-color: #eee;
   border-bottom: 10px solid var(--color_secundario );
+  display: table;
 }
 
 #calendario .tabs li {
@@ -1111,4 +1125,31 @@ body > div.page-content > section:nth-child(1) {
 .sub-menu-li {
   margin-bottom: unset !important;
   padding-bottom: unset !important;
+}
+
+/* PAGE STYLES */
+
+h2 {
+  border-left: 3px solid var(--color_secundario);
+  padding: 10px;
+  background: linear-gradient(to right, #ddd, 5%, transparent);
+  border-radius: 3px;
+  font-weight: 600;
+}
+
+h3 {
+  font-weight: 600;
+  border-left: 3px solid var(--color_secundario);
+  padding-left: 10px;
+  border-radius: 3px;
+}
+
+.post-body-content img {
+  max-width: 100%;
+  height: unset;
+}
+
+#contenido_pagina {
+  max-width: 650px;
+  margin: auto;
 }
